@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Review extends BaseEntity {
     private String comment;
-    private int rating;
+    private float rating;
 
     // Define one-to-one association with User
     @OneToOne

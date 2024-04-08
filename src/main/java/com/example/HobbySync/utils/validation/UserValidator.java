@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 public class UserValidator {
     private static final String NAME_REGEX = "^[a-zA-Z\\s]{1,50}$";
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,50}$";
-    private static final String USERNAME_REGEX = "^[a-zA-Z0-9 ]{1,20}$";
-    private static final String PASSWORD_REGEX = "^(?=.[A-Za-z])(?=.\\d)(?=.*[.,!?:;])[A-Za-z\\d.,!?:;]{8,}$";
+    private static final String USERNAME_REGEX = "^[a-zA-Z0-9-_]{1,20}$";
+    private static final String PASSWORD_REGEX = "^[a-zA-Z\\s]{1,50}$";
 
     public boolean validateEmail(String email) {
         return email.matches(EMAIL_REGEX);

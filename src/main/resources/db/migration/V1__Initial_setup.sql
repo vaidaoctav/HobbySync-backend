@@ -35,16 +35,16 @@ CREATE TABLE IF NOT EXISTS hobby_event (
     FOREIGN KEY (hobby_group_id) REFERENCES hobby_group(id)
     );
 
-CREATE TABLE IF NOT EXISTS review (
-    id UUID PRIMARY KEY,
-    comment VARCHAR(255),
-    rating INT NOT NULL,
-    user_id UUID NOT NULL,
-    hobby_event_id UUID NOT NULL,
-    created TIMESTAMP NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES app_user(id),
-    FOREIGN KEY (hobby_event_id) REFERENCES hobby_event(id)
-    );
+    CREATE TABLE IF NOT EXISTS review (
+        id UUID PRIMARY KEY,
+        comment VARCHAR(255),
+        rating INT NOT NULL,
+        user_id UUID NOT NULL,
+        hobby_event_id UUID NOT NULL,
+        created TIMESTAMP NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES app_user(id),
+        FOREIGN KEY (hobby_event_id) REFERENCES hobby_event(id)
+        );
 
 CREATE TABLE IF NOT EXISTS token (
     id UUID PRIMARY KEY,

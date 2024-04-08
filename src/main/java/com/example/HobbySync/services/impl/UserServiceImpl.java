@@ -43,11 +43,11 @@ public class UserServiceImpl implements UserService {
     public UserDTO login(AuthenticationDTO authenticationDTO) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        authenticationDTO.getEmail(), authenticationDTO.getPassword()
+                        authenticationDTO.getUsername(), authenticationDTO.getPassword()
                 )
         );
-        User user = userRepository.findByEmail(authenticationDTO.getEmail())
-                .orElseThrow(() -> new NotFoundException("There is no user registered with this email!"));
+        User user = userRepository.findByUsername(authenticationDTO.getUsername())
+                .orElseThrow(() -> new NotFoundException("There is no user registered with this username!"));
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);

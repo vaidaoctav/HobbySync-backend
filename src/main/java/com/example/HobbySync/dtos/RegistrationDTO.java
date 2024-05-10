@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.geo.Point;
+import org.springframework.web.multipart.MultipartFile;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +22,6 @@ public class RegistrationDTO {
     private String firstName;
     private String lastName;
     private String bio;
-    private String profilePicture;
+    private MultipartFile profilePicture;
     private String userType;
 }

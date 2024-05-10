@@ -20,4 +20,17 @@ public class UserMapper {
                 .jwtToken(jwtToken)
                 .refreshToken(refreshToken).build();
     }
+   public UserDTO entityToDTO(User user) {
+       return UserDTO.builder()
+               .id(user.getId())
+               .username(user.getUsername())
+               .email(user.getEmail())
+               .firstName(user.getFirstName())
+               .lastName(user.getLastName())
+               .bio(user.getBio())
+               .profilePicture(user.getProfilePicture())
+               .xCoord(user.getXCoord())
+               .yCoord(user.getYCoord())
+               .userType(user.getUserType()).build();
+   }
 }

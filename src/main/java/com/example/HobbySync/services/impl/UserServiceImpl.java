@@ -24,8 +24,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -85,9 +91,12 @@ public class UserServiceImpl implements UserService {
                 .firstName(registrationDTO.getFirstName())
                 .lastName(registrationDTO.getLastName())
                 .bio(registrationDTO.getBio())
-                .profilePicture(registrationDTO.getProfilePicture())
                 .userType(UserType.valueOf(registrationDTO.getUserType()))
                 .build();
+        if (registrationDTO.getProfilePicture() != null && !registrationDTO.getProfilePicture().isEmpty()) {
+            String filePath = saveFile(registrationDTO.getProfilePicture());
+            user.setProfilePicture(filePath);
+        }
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
@@ -105,7 +114,16 @@ public class UserServiceImpl implements UserService {
                 .build();
         tokenRepository.save(token);
     }
-
+    private String saveFile(MultipartFile file) {
+        String uploadDir = "C:/HobbySync_profile_pictures";
+        Path filePath = Paths.get(uploadDir, System.currentTimeMillis() + "_" + file.getOriginalFilename());
+        try {
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            return "/images/" + filePath.getFileName().toString();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save file", e);
+        }
+    }
     private void revokeAllUserTokens(User user) {
         var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
         if (validUserTokens.isEmpty())
@@ -144,5 +162,26 @@ public class UserServiceImpl implements UserService {
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }
+    }
+    @Override
+    public UserDTO updateUser(UUID id, RegistrationDTO userDTO) {
+        // Find the user by userId
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        // Update user information from userDTO
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setBio(userDTO.getBio());
+        if (userDTO.getProfilePicture() != null && !userDTO.getProfilePicture().isEmpty()) {
+            String filePath = saveFile(userDTO.getProfilePicture());
+            user.setProfilePicture(filePath);
+        }
+        User updatedUser = userRepository.save(user);
+
+        // Convert the updated user to DTO and return
+        return userMapper.entityToDTO(updatedUser);
     }
 }

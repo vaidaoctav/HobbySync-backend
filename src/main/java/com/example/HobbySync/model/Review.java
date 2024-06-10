@@ -17,12 +17,10 @@ public class Review extends BaseEntity {
     private String comment;
     private float rating;
 
-    // Define one-to-one association with User
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    // Define many-to-one association with HobbyEvent
     @ManyToOne
     @JoinColumn(name = "hobby_event_id")
     private HobbyEvent hobbyEvent;

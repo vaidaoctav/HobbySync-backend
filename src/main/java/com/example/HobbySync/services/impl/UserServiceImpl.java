@@ -165,11 +165,8 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public UserDTO updateUser(UUID id, RegistrationDTO userDTO) {
-        // Find the user by userId
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("User not found"));
-
-        // Update user information from userDTO
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
         user.setFirstName(userDTO.getFirstName());
@@ -180,8 +177,6 @@ public class UserServiceImpl implements UserService {
             user.setProfilePicture(filePath);
         }
         User updatedUser = userRepository.save(user);
-
-        // Convert the updated user to DTO and return
         return userMapper.entityToDTO(updatedUser);
     }
 }

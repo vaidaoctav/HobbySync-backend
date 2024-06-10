@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,8 +41,6 @@ public class HobbyGroupServiceImpl implements HobbyGroupService {
     public HobbyGroupDTO updateHobbyGroup(UUID id, HobbyGroupDTO hobbyGroupDTO) {
         HobbyGroup existingHobbyGroup = hobbyGroupRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("HobbyGroup not found with id: " + id));
-
-        // Update fields of existingHobbyGroup with fields from hobbyGroupDTO
 
         HobbyGroup updatedHobbyGroup = hobbyGroupRepository.save(existingHobbyGroup);
         return hobbyGroupMapper.toDTO(updatedHobbyGroup);

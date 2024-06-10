@@ -31,3 +31,8 @@ application:
       expiration: 86400000 # a day
       refresh-token:
         expiration: 604800000 # 7 days
+openai:
+  api:
+    key: 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
+    url: https://api.openai.com/v1/chat/completions
+  model: gpt-3.5-turbo

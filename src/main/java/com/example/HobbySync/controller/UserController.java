@@ -25,7 +25,6 @@ public class UserController {
                                             @RequestParam("lastName") String lastName,
                                             @RequestParam("bio") String bio,
                                             @RequestParam(value="profilePicture",required = false) MultipartFile profilePicture) {
-        System.out.println("lala");
         var userDTO = RegistrationDTO.builder().firstName(firstName).lastName(lastName).email(email).bio(bio).profilePicture(profilePicture).username(username).build();
 
         try {

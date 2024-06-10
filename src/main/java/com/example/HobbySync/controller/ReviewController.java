@@ -1,5 +1,6 @@
 package com.example.HobbySync.controller;
 
+import com.example.HobbySync.dtos.EventReviewDTO;
 import com.example.HobbySync.dtos.ReviewDTO;
 import com.example.HobbySync.services.interfaces.ReviewService;
 import com.example.HobbySync.utils.exception.BadInputException;
@@ -31,6 +32,7 @@ public class ReviewController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ReviewDTO addReview(@RequestBody ReviewDTO reviewDTO) throws BadInputException {
+        reviewDTO.setId(UUID.randomUUID());
         return reviewService.addReview(reviewDTO);
     }
 
@@ -58,6 +60,12 @@ public class ReviewController {
     @ResponseStatus(HttpStatus.OK)
     public double getAverageRatingForEvent(@PathVariable UUID eventId) {
         return reviewService.getAverageRatingForEvent(eventId);
+    }
+
+    @GetMapping("/user/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EventReviewDTO> getEventReviewsForUser(@PathVariable UUID userId) {
+        return reviewService.getEventReviewsForUser(userId);
     }
 }
 

@@ -2,15 +2,10 @@ package com.example.HobbySync.dtos;
 
 import com.example.HobbySync.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.geo.Point;
-
 import java.util.UUID;
 @Data
 @AllArgsConstructor

@@ -4,8 +4,11 @@ import com.example.HobbySync.dtos.HobbyEventDTO;
 import com.example.HobbySync.model.HobbyEvent;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Collectors;
+
 @Component
 public class HobbyEventMapper {
+    private final UserMapper userMapper = new UserMapper();
     public HobbyEventDTO toDTO(HobbyEvent hobbyEvent) {
         return HobbyEventDTO.builder()
                 .id(hobbyEvent.getId())
@@ -16,20 +19,9 @@ public class HobbyEventMapper {
                 .fee(hobbyEvent.getFee())
                 .xCoord(hobbyEvent.getXCoord())
                 .yCoord(hobbyEvent.getYCoord())
-                .participants(hobbyEvent.getParticipants())
+                .participants(hobbyEvent.getParticipants().stream().map(userMapper::entityToDTO).collect(Collectors.toSet()))
                 .hobbyGroupId(hobbyEvent.getHobbyGroup().getId())
                 .build();
     }
-    public HobbyEvent toEntity(HobbyEventDTO hobbyEventDTO) {
-        return HobbyEvent.builder()
-                .name(hobbyEventDTO.getName())
-                .dateTime(hobbyEventDTO.getDateTime())
-                .description(hobbyEventDTO.getDescription())
-                .capacity(hobbyEventDTO.getCapacity())
-                .fee(hobbyEventDTO.getFee())
-                .xCoord(hobbyEventDTO.getXCoord())
-                .yCoord(hobbyEventDTO.getYCoord())
-                .participants(hobbyEventDTO.getParticipants())
-                .build();
-    }
+
 }

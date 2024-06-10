@@ -1,5 +1,6 @@
 package com.example.HobbySync.services.impl;
 
+import com.example.HobbySync.dtos.EventReviewDTO;
 import com.example.HobbySync.dtos.ReviewDTO;
 import com.example.HobbySync.model.HobbyEvent;
 import com.example.HobbySync.model.Review;
@@ -67,21 +68,17 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteReview(UUID reviewId) throws NotFoundException {
-        // Verifică dacă recenzia există în baza de date
         if (!reviewRepository.existsById(reviewId)) {
             throw new NotFoundException("Review not found with id: " + reviewId);
         }
 
-        // Șterge recenzia din baza de date
         reviewRepository.deleteById(reviewId);
     }
 
     @Override
     public List<ReviewDTO> getReviewsForEvent(UUID eventId) {
-        // Găsește toate recenziile asociate evenimentului cu eventId
         List<Review> reviews = reviewRepository.findByHobbyEventId(eventId);
 
-        // Convertște lista de recenzii în DTO-uri
         return reviews.stream()
                 .map(reviewMapper::toDTO)
                 .collect(Collectors.toList());
@@ -89,18 +86,31 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public double getAverageRatingForEvent(UUID eventId) {
-        // Găsește toate recenziile asociate evenimentului cu eventId
         List<Review> reviews = reviewRepository.findByHobbyEventId(eventId);
-
-        // Calculează media notelor recenziilor
         if (!reviews.isEmpty()) {
             double totalRating = reviews.stream()
                     .mapToDouble(Review::getRating)
                     .sum();
             return totalRating / reviews.size();
         } else {
-            return 0; // Dacă nu există recenzii, returnează 0
+            return 0;
         }
+    }
+
+    @Override
+    public List<EventReviewDTO> getEventReviewsForUser(UUID userId) {
+        List<Review> reviews = reviewRepository.findByUserId(userId);
+
+        return reviews.stream()
+                .map(review -> EventReviewDTO.builder()
+                        .eventId(review.getHobbyEvent().getId())
+                        .eventName(review.getHobbyEvent().getName())
+                        .eventDateTime(review.getHobbyEvent().getDateTime())
+                        .eventDescription(review.getHobbyEvent().getDescription())
+                        .reviewComment(review.getComment())
+                        .reviewRating(review.getRating())
+                        .build())
+                .collect(Collectors.toList());
     }
 
 }

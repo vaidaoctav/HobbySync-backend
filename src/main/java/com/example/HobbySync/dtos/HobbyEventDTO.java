@@ -1,6 +1,7 @@
 package com.example.HobbySync.dtos;
 
 import com.example.HobbySync.model.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,9 +22,11 @@ public class HobbyEventDTO {
     private String description;
     private Integer capacity;
     private Integer fee;
+    @JsonProperty("xCoord")
     private Double xCoord;
+    @JsonProperty("yCoord")
     private Double yCoord;
-    private Set<User> participants;
+    private Set<UserDTO> participants;
     private UUID hobbyGroupId;
 }
 

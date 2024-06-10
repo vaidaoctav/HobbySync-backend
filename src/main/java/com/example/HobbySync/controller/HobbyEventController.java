@@ -5,6 +5,7 @@ import com.example.HobbySync.services.interfaces.HobbyEventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +25,8 @@ public class HobbyEventController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public HobbyEventDTO createHobbyEvent(@RequestBody HobbyEventDTO hobbyEventDTO) {
+        //generate UUID
+        hobbyEventDTO.setId(UUID.randomUUID());
         return hobbyEventService.addHobbyEvent(hobbyEventDTO);
     }
 
@@ -44,5 +47,22 @@ public class HobbyEventController {
     @ResponseStatus(HttpStatus.OK)
     public List<HobbyEventDTO> getAllHobbyEvents() {
         return hobbyEventService.getAllHobbyEvents();
+    }
+
+    @PutMapping("/{eventId}/join")
+    @ResponseStatus(HttpStatus.OK)
+    public void joinHobbyEvent(@PathVariable UUID eventId, @RequestBody UUID userId) {
+        hobbyEventService.addParticipant(eventId, userId);
+    }
+
+    @PostMapping("/recommend")
+    @ResponseStatus(HttpStatus.OK)
+    public List<HobbyEventDTO> recommendEvents(@RequestBody String userDescription) throws Exception {
+        try {
+            return hobbyEventService.recommendEvents(userDescription);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error generating recommendations", e);
+        }
     }
 }

@@ -23,7 +23,6 @@ public class LogoutService implements LogoutHandler {
             Authentication authentication
     ) {
         String jwt = extractJwtFromCookies(request);
-        System.out.println(jwt);
 
         if (jwt != null) {
             var storedToken = tokenRepository.findByToken(jwt).orElse(null);

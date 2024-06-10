@@ -2,7 +2,6 @@ package com.example.HobbySync.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.geo.Point;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;

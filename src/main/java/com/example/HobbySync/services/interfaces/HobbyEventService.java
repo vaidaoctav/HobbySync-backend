@@ -16,4 +16,8 @@ public interface HobbyEventService {
     void deleteHobbyEvent(UUID eventId) throws NotFoundException;
 
     List<HobbyEventDTO> getAllHobbyEvents();
+
+    void addParticipant(UUID eventId, UUID userId) throws NotFoundException;
+
+    List<HobbyEventDTO> recommendEvents(String userDescription) throws Exception;
 }
